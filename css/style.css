@@ -1,0 +1,503 @@
+/* =========================================================
+   Undangan Dendi & Amora — "Di Bawah Cahaya Purnama"
+   Mobile-first. Animasi hanya transform & opacity.
+   ========================================================= */
+
+:root {
+  --ivory: #FFF9F1;
+  --ivory-2: #FBF1E4;
+  --sage: #82977A;
+  --sage-strong: #5E7257;
+  --rose: #D9A6A0;
+  --rose-strong: #9E625C;
+  --gold: #C6A66B;
+  --night: #25324A;
+  --night-2: #1C2639;
+  --moon: #F3E7BE;
+  --text: #33343A;
+  --text-2: #6F7077;
+
+  --primary: var(--sage);
+  --primary-strong: var(--sage-strong);
+  --accent: var(--rose);
+
+  --serif: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --arabic: "Amiri", "Scheherazade New", "Noto Naskh Arabic", "Traditional Arabic", "Arabic Typesetting", serif;
+
+  --radius: 18px;
+  --shadow: 0 10px 30px -18px rgba(37, 50, 74, .45);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+body.theme-mawar { --primary: var(--rose); --primary-strong: var(--rose-strong); --accent: var(--sage); }
+body.theme-emas { --primary: var(--sage); --primary-strong: var(--sage-strong); --accent: var(--gold); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--text);
+  font: 400 16px/1.7 var(--sans);
+  overflow-x: hidden;
+}
+body.is-locked { overflow: hidden; }
+.no-js body.is-locked { overflow: auto; }
+img { max-width: 100%; display: block; }
+a { color: var(--primary-strong); }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+.pre { white-space: pre-line; }
+.icon { width: 1.15em; height: 1.15em; flex: none; vertical-align: -.2em; }
+.icon--lg { width: 34px; height: 34px; color: var(--gold); }
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- Tipografi ---------- */
+h1, h2, h3, .couple-title, .script-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+}
+.eyebrow {
+  font-size: .78rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  margin: 0 0 .6rem;
+  color: var(--text-2);
+}
+.night .eyebrow { color: var(--moon); opacity: .9; }
+.section-title { font-size: clamp(2rem, 7vw, 2.8rem); text-align: center; color: var(--text); }
+.night .section-title { color: var(--ivory); }
+.lead { font-size: 1.02rem; color: var(--text); text-align: center; margin: 1rem 0; }
+.night .lead { color: var(--ivory); }
+.salam { font-family: var(--serif); font-size: 1.35rem; font-style: italic; text-align: center; margin: .4rem 0 1rem; }
+.muted { color: var(--text-2); }
+.muted-light { color: rgba(255, 249, 241, .82); margin: 0; }
+.arabic {
+  font-family: var(--arabic);
+  font-size: clamp(1.45rem, 5.5vw, 1.9rem);
+  line-height: 2.1;
+  text-align: center;
+  margin: .4rem 0 1rem;
+}
+.arabic--sm { font-size: clamp(1.2rem, 4.6vw, 1.5rem); margin-bottom: .2rem; }
+
+.couple-title {
+  display: flex; flex-direction: column; align-items: center;
+  font-size: clamp(3rem, 15vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: .01em;
+}
+.couple-title em {
+  font-style: italic; font-size: .55em; color: var(--gold); line-height: 1; margin: .1em 0;
+}
+.couple-title--hero { font-size: clamp(2.8rem, 13vw, 4.2rem); }
+.couple-title--closing { font-size: clamp(2.4rem, 11vw, 3.4rem); margin-top: .6rem; color: var(--ivory); }
+
+/* ---------- Layout ---------- */
+.container { width: min(100% - 2.5rem, 1040px); margin-inline: auto; position: relative; z-index: 1; }
+.narrow { width: min(100% - 2.5rem, 640px); }
+.section { padding: clamp(4rem, 12vw, 6.5rem) 0; position: relative; overflow: hidden; }
+.section--couple, .section--rsvp, .section--gift { background: var(--ivory-2); }
+
+.night {
+  background:
+    radial-gradient(120% 70% at 50% 0%, #34446300 0%, transparent 60%),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  color: var(--ivory);
+}
+
+.ornament { display: block; width: 180px; height: 36px; margin: 1rem auto 1.6rem; color: var(--gold); }
+.sprig { display: block; width: 220px; height: 56px; margin: .6rem auto 1.8rem; }
+
+/* ---------- Bulan purnama ---------- */
+.moon {
+  --size: 150px;
+  width: var(--size); height: var(--size);
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle at 34% 32%, #FFFCEF 0%, var(--moon) 52%, #E2CF98 100%);
+  box-shadow: 0 0 34px 6px rgba(243, 231, 190, .35), inset -10px -12px 24px rgba(198, 166, 107, .35);
+}
+.moon::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle at 64% 38%, rgba(205, 186, 136, .45) 0 7%, transparent 8%),
+    radial-gradient(circle at 40% 68%, rgba(205, 186, 136, .35) 0 5.5%, transparent 6.5%),
+    radial-gradient(circle at 72% 70%, rgba(205, 186, 136, .3) 0 4%, transparent 5%);
+}
+.moon::after {
+  content: ""; position: absolute; inset: -45%; border-radius: 50%; z-index: -1;
+  background: radial-gradient(circle, rgba(243, 231, 190, .28) 0%, rgba(243, 231, 190, .08) 45%, transparent 68%);
+}
+.moon--sm { --size: 92px; }
+.moon--lg { --size: min(64vw, 280px, 40vh); }
+.moon img {
+  position: absolute; inset: 7%; width: 86%; height: 86%;
+  object-fit: cover; border-radius: 50%; z-index: 1;
+  border: 2px solid rgba(255, 252, 239, .9);
+}
+
+/* ---------- Bintang ---------- */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.stars i {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--moon); opacity: .55;
+}
+.stars i:nth-child(1) { top: 9%; left: 14%; }
+.stars i:nth-child(2) { top: 16%; left: 82%; width: 2px; height: 2px; }
+.stars i:nth-child(3) { top: 28%; left: 8%; width: 2px; height: 2px; }
+.stars i:nth-child(4) { top: 6%; left: 58%; }
+.stars i:nth-child(5) { top: 38%; left: 90%; width: 4px; height: 4px; }
+.stars i:nth-child(6) { top: 22%; left: 36%; width: 2px; height: 2px; }
+.stars i:nth-child(7) { top: 52%; left: 4%; }
+.stars i:nth-child(8) { top: 46%; left: 72%; width: 2px; height: 2px; }
+
+/* ---------- Bingkai bunga ---------- */
+.corner {
+  --sx: 1; --sy: 1; --cs: min(50vw, 270px); --co: 1;
+  position: absolute; width: var(--cs); height: var(--cs);
+  pointer-events: none; z-index: 0; opacity: var(--co);
+  transform: scale(var(--sx), var(--sy));
+}
+.corner--sm { --cs: min(34vw, 180px); }
+.corner--soft { --cs: min(38vw, 200px); --co: .55; }
+.corner--tl { top: -14px; left: -14px; }
+.corner--tr { top: -14px; right: -14px; --sx: -1; }
+.corner--bl { bottom: -14px; left: -14px; --sy: -1; }
+.corner--br { bottom: -14px; right: -14px; --sx: -1; --sy: -1; }
+
+/* ---------- Tombol ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: .7rem 1.35rem;
+  border-radius: 999px; border: 1px solid transparent;
+  font-weight: 600; font-size: .95rem; text-decoration: none; cursor: pointer;
+  transition: transform .18s var(--ease), background-color .18s var(--ease), border-color .18s, color .18s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--primary-strong); color: #fff; }
+.btn-primary:hover { background: color-mix(in srgb, var(--primary-strong) 88%, #000); }
+.btn-ghost { background: transparent; border-color: color-mix(in srgb, var(--primary-strong) 50%, transparent); color: var(--primary-strong); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.night .btn-ghost { color: var(--ivory); border-color: rgba(243, 231, 190, .5); }
+.night .btn-ghost:hover { background: rgba(243, 231, 190, .12); }
+.btn-moon { background: var(--moon); color: var(--night); box-shadow: 0 6px 24px -8px rgba(243, 231, 190, .7); }
+.btn-moon:hover { background: #FFF4D3; }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: .6; cursor: progress; }
+
+/* ---------- Sampul ---------- */
+/* Ukuran elemen sampul mengikuti lebar DAN tinggi layar agar selalu muat satu layar,
+   termasuk laptop yang lebar tetapi pendek. Bila tetap tidak muat, sampul bisa digulir. */
+.cover {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; flex-direction: column;
+  padding: max(1rem, 3vh) 1.25rem; overflow-x: hidden; overflow-y: auto; text-align: center;
+  overscroll-behavior: contain;
+  transition: transform .9s var(--ease), opacity .9s var(--ease);
+}
+.no-js .cover { display: none; }
+.cover.is-opening { transform: translateY(-100%); opacity: 0; }
+.cover__inner { position: relative; z-index: 1; max-width: 560px; width: 100%; margin: auto; }
+.cover .moon { --size: min(36vw, 150px, 19vh); margin-bottom: min(1.4rem, 2.4vh); }
+.cover .arabic--sm { margin: 0; line-height: 1.8; font-size: clamp(1.1rem, min(4.6vw, 3.4vh), 1.5rem); }
+.cover .eyebrow { margin-bottom: min(.6rem, 1vh); }
+.cover .couple-title { font-size: clamp(2.4rem, min(15vw, 9vh), 4.6rem); }
+.cover__date { letter-spacing: .3em; font-size: .9rem; color: var(--moon); margin: min(.8rem, 1.4vh) 0 0; }
+.cover__guest {
+  margin: clamp(.8rem, 3vh, 1.6rem) auto; padding: clamp(.6rem, 1.8vh, 1rem) 1.4rem;
+  border: 1px solid rgba(243, 231, 190, .35); border-radius: var(--radius);
+  background: rgba(255, 249, 241, .06); max-width: 360px;
+}
+.guest-name { font-family: var(--serif); font-size: clamp(1.25rem, 3.4vh, 1.6rem); font-weight: 600; margin: .2rem 0 0; color: var(--ivory); line-height: 1.25; }
+.guest-name span { font-size: .72em; font-weight: 500; opacity: .85; }
+
+/* ---------- Hero ---------- */
+.hero {
+  min-height: 100svh; display: grid; place-items: center; text-align: center;
+  padding: 5rem 1.25rem 4rem; position: relative; overflow: hidden;
+}
+.hero__inner { position: relative; z-index: 1; }
+.hero__date { font-family: var(--serif); font-size: 1.3rem; margin: 1rem 0 0; color: var(--moon); }
+
+/* ---------- Pembuka ---------- */
+.section--opening { text-align: center; }
+.quote {
+  margin: 2rem 0 0; padding: 1.6rem 1.2rem;
+  border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+}
+.quote blockquote { margin: 0; font-family: var(--serif); font-size: 1.2rem; font-style: italic; line-height: 1.55; }
+.quote figcaption { margin-top: .8rem; font-size: .85rem; letter-spacing: .12em; color: var(--text-2); text-transform: uppercase; }
+
+/* ---------- Mempelai ---------- */
+.couple-grid { display: grid; gap: 1.2rem; justify-items: center; }
+.couple-amp { font-family: var(--serif); font-style: italic; font-size: 3rem; color: var(--gold); line-height: 1; }
+.person { text-align: center; max-width: 360px; }
+.person__frame {
+  width: 190px; height: 190px; margin: 0 auto 1.1rem; border-radius: 50%;
+  padding: 6px; background: conic-gradient(from 200deg, var(--gold), var(--rose), var(--sage), var(--gold));
+  display: grid; place-items: center;
+}
+.person__frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid var(--ivory); }
+.person__initial {
+  width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ivory); color: var(--primary-strong);
+  font-family: var(--serif); font-size: 4.4rem; font-weight: 500; border: 4px solid var(--ivory);
+}
+.person__name { font-size: 1.9rem; }
+.person__family { color: var(--text-2); margin: .5rem 0 0; }
+.person__family strong { color: var(--text); font-weight: 600; }
+.person__bio { color: var(--text-2); font-size: .95rem; }
+
+/* ---------- Acara ---------- */
+.countdown {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem;
+  max-width: 420px; margin: 0 auto 2.2rem;
+}
+.countdown div {
+  padding: .8rem .2rem; text-align: center; border-radius: 14px;
+  border: 1px solid rgba(243, 231, 190, .3); background: rgba(255, 249, 241, .06);
+}
+.countdown span { display: block; font-family: var(--serif); font-size: 2rem; font-weight: 600; color: var(--moon); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.countdown small { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+.countdown-done { text-align: center; color: var(--moon); margin: 0 0 2rem; }
+
+.events-grid { display: grid; gap: 1.2rem; }
+.event-card {
+  background: var(--ivory); color: var(--text);
+  border-radius: var(--radius); padding: 1.8rem 1.4rem;
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .6);
+  text-align: center; position: relative;
+}
+.event-card::before {
+  content: ""; position: absolute; inset: 8px; border-radius: calc(var(--radius) - 6px);
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent); pointer-events: none;
+}
+.event-card h3 { font-size: 2rem; color: var(--primary-strong); margin-bottom: .8rem; }
+.event-card__row { display: flex; align-items: center; justify-content: center; gap: .55rem; margin: .35rem 0; }
+.event-card__row .icon, .event-card__place .icon { color: var(--gold); }
+.event-card__place { display: flex; gap: .55rem; justify-content: center; text-align: left; margin: .9rem auto 0; max-width: 340px; }
+.event-card__place strong { display: block; }
+.event-card__place span { color: var(--text-2); font-size: .93rem; }
+.event-card__actions { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-top: 1.4rem; position: relative; z-index: 1; }
+.night .event-card .btn-ghost { color: var(--primary-strong); border-color: color-mix(in srgb, var(--primary-strong) 50%, transparent); }
+.night .event-card .btn-ghost:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.cal-menu { position: relative; }
+.cal-menu__list {
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: #fff; border-radius: 12px; box-shadow: var(--shadow); padding: .4rem; min-width: 200px; z-index: 5;
+}
+.cal-menu__list a { display: block; padding: .6rem .8rem; border-radius: 8px; text-decoration: none; color: var(--text); }
+.cal-menu__list a:hover { background: var(--ivory-2); }
+
+/* ---------- Kisah ---------- */
+.timeline { list-style: none; margin: 0; padding: 0 0 0 1.6rem; border-left: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); }
+.timeline li { position: relative; padding: 0 0 2rem; }
+.timeline li::before {
+  content: ""; position: absolute; left: calc(-1.6rem - 6px); top: .45rem;
+  width: 11px; height: 11px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 0 4px var(--ivory);
+}
+.timeline__date { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-2); }
+.timeline h3 { font-size: 1.5rem; margin: .1rem 0 .3rem; }
+.timeline p { margin: 0; color: var(--text-2); }
+
+/* ---------- Galeri ---------- */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+.gallery__item { display: block; border-radius: 14px; overflow: hidden; background: var(--ivory-2); aspect-ratio: 1; }
+.gallery__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
+.gallery__item:hover img { transform: scale(1.04); }
+
+.lightbox {
+  border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh;
+  width: 100vw; height: 100vh; margin: 0;
+}
+.lightbox::backdrop { background: rgba(20, 27, 40, .92); }
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox figure { margin: 0; max-width: 92vw; text-align: center; }
+.lightbox img { max-width: 92vw; max-height: 80vh; border-radius: 10px; margin: 0 auto; }
+.lightbox figcaption { color: var(--ivory); margin-top: .6rem; font-size: .92rem; }
+.lightbox__close, .lightbox__nav {
+  position: fixed; width: 46px; height: 46px; border-radius: 50%; border: 0;
+  background: rgba(255, 249, 241, .14); color: var(--ivory); display: grid; place-items: center; cursor: pointer;
+}
+.lightbox__close { top: 16px; right: 16px; }
+.lightbox__nav { top: 50%; transform: translateY(-50%); }
+.lightbox__nav--prev { left: 12px; }
+.lightbox__nav--next { right: 12px; }
+
+/* ---------- Kartu & formulir ---------- */
+.card {
+  background: #fff; border-radius: var(--radius); padding: 1.6rem 1.3rem;
+  box-shadow: var(--shadow); border: 1px solid rgba(198, 166, 107, .2);
+}
+.form { display: grid; gap: 1rem; }
+.form__hello { margin: 0; text-align: center; color: var(--text-2); }
+.form__hello strong { color: var(--text); }
+.field { display: grid; gap: .35rem; position: relative; }
+.field > span, .choice legend { font-weight: 600; font-size: .92rem; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: .75rem .9rem; border-radius: 12px;
+  border: 1px solid #D9D2C4; background: var(--ivory); min-height: 46px;
+  transition: border-color .18s, box-shadow .18s;
+}
+.field textarea { resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+.counter { justify-self: end; color: var(--text-2); font-size: .78rem; }
+.choice { border: 0; padding: 0; margin: 0; display: grid; gap: .5rem; }
+.choice legend { margin-bottom: .5rem; }
+.choice label {
+  display: flex; align-items: center; gap: .7rem; padding: .7rem .9rem; cursor: pointer;
+  border: 1px solid #E3DCCF; border-radius: 12px; background: var(--ivory);
+  transition: border-color .18s, background-color .18s;
+}
+.choice label:has(input:checked) { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, var(--ivory)); }
+.choice input { accent-color: var(--primary-strong); width: 18px; height: 18px; }
+.form__error { margin: 0; color: #A23B3B; font-size: .9rem; }
+.form__success { margin: 0; color: var(--sage-strong); font-size: .92rem; }
+.hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.notice-card { text-align: center; color: var(--text-2); }
+.notice-card__title { font-family: var(--serif); font-size: 1.7rem; color: var(--primary-strong); margin: 0; }
+
+/* ---------- Ucapan ---------- */
+.wishes { list-style: none; padding: 0; margin: 1.6rem 0 1rem; display: grid; gap: .8rem; }
+.wish {
+  background: #fff; border-radius: 14px; padding: 1rem 1.1rem;
+  border-left: 3px solid var(--accent); box-shadow: 0 6px 20px -16px rgba(37, 50, 74, .5);
+}
+.wish__name { font-weight: 600; margin: 0; }
+.wish__date { font-size: .78rem; color: var(--text-2); }
+.wish__msg { margin: .3rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+.wishes__empty { text-align: center; color: var(--text-2); }
+
+/* ---------- Hadiah ---------- */
+.gift-grid { display: grid; gap: 1rem; margin-top: 1.4rem; }
+.gift-card { text-align: center; display: grid; justify-items: center; gap: .2rem; }
+.gift-card p { margin: 0; }
+.gift-card__bank { font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; color: var(--text-2); margin-top: .4rem !important; }
+.gift-card__number { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; letter-spacing: .04em; }
+.gift-card__holder { color: var(--text-2); margin-bottom: .8rem !important; }
+
+/* ---------- Penutup ---------- */
+.section--closing { text-align: center; padding-bottom: clamp(9rem, 30vw, 12rem); }
+.section--closing .arabic { color: var(--moon); }
+.prayer { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: rgba(255, 249, 241, .9); }
+
+.site-footer { background: var(--night-2); color: rgba(255, 249, 241, .7); text-align: center; padding: 1.2rem; font-size: .85rem; }
+.site-footer p { margin: 0; }
+
+/* ---------- Musik, toast, pratinjau ---------- */
+.music-toggle {
+  position: fixed; right: 16px; bottom: 16px; z-index: 40;
+  width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(243, 231, 190, .6);
+  background: var(--night); color: var(--moon); display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .6);
+}
+.music-toggle .icon-pause { display: none; }
+.music-toggle[aria-pressed="true"] .icon-play { display: none; }
+.music-toggle[aria-pressed="true"] .icon-pause { display: block; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%); z-index: 60;
+  background: var(--night); color: var(--ivory); padding: .7rem 1.1rem; border-radius: 999px;
+  font-size: .9rem; box-shadow: var(--shadow);
+}
+.preview-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 70; text-align: center;
+  background: var(--gold); color: var(--night); font-size: .82rem; font-weight: 600; padding: .35rem 1rem;
+}
+
+.soon { isolation: isolate; min-height: 100vh; display: grid; place-content: center; text-align: center; padding: 2rem; background: var(--night); color: var(--ivory); }
+.script-title { font-size: 3rem; margin-bottom: .6rem; }
+
+/* =========================================================
+   Animasi (ringan). Hanya berjalan saat bagian terlihat.
+   ========================================================= */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+@keyframes twinkle { 0%, 100% { opacity: .25; } 50% { opacity: .9; } }
+@keyframes halo { from { opacity: .7; transform: scale(.96); } to { opacity: 1; transform: scale(1.04); } }
+@keyframes sway {
+  0%, 100% { transform: scale(var(--sx), var(--sy)) rotate(0deg); }
+  50% { transform: scale(var(--sx), var(--sy)) rotate(2.2deg); }
+}
+/* Bunga sudut "mekar": tumbuh dari kecil sambil berputar sedikit */
+@keyframes bloom {
+  from { opacity: 0; transform: scale(calc(var(--sx) * .35), calc(var(--sy) * .35)) rotate(-14deg); }
+  60% { opacity: var(--co); }
+  to { opacity: var(--co); transform: scale(var(--sx), var(--sy)) rotate(0deg); }
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes sprig-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -8vh, 0); opacity: 0; }
+  8% { opacity: var(--po, .85); }
+  85% { opacity: var(--po, .85); }
+  100% { transform: translate3d(var(--drift, 40px), 108vh, 0); opacity: 0; }
+}
+@keyframes petal-flutter {
+  from { transform: translateX(-14px) rotate(-30deg) rotateY(0deg); }
+  to { transform: translateX(14px) rotate(40deg) rotateY(160deg); }
+}
+
+.in-view .stars i { animation: twinkle 4.5s ease-in-out infinite; }
+.in-view .stars i:nth-child(2n) { animation-duration: 6s; animation-delay: 1.2s; }
+.in-view .stars i:nth-child(3n) { animation-duration: 7.5s; animation-delay: 2.4s; }
+.in-view .moon::after { animation: halo 5s ease-in-out infinite alternate; }
+.in-view .moon { animation: float 7s ease-in-out infinite; }
+
+/* Bunga sudut: tersembunyi sampai bagiannya terlihat, lalu mekar dan bergoyang pelan */
+.js .corner { opacity: 0; }
+.js .in-view .corner { animation: bloom 1.8s var(--ease) both, sway 9s ease-in-out 1.8s infinite; }
+.js .in-view .corner--tr, .js .in-view .corner--bl { animation-delay: .25s, 2.05s; }
+.js .in-view .corner--br { animation-delay: .4s, 2.2s; }
+
+/* Rangkaian bunga pemisah bergoyang setelah muncul */
+.sprig use { transform-box: fill-box; transform-origin: 50% 80%; }
+.sprig.is-visible use { animation: sprig-sway 5s ease-in-out infinite; }
+
+/* ---------- Kelopak berjatuhan ---------- */
+.petals { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; display: none; }
+.js .petals.is-on { display: block; }
+.petal { position: absolute; top: 0; left: var(--x); width: var(--size, 16px); height: var(--size, 16px);
+  animation: petal-fall var(--dur, 14s) linear var(--delay, 0s) infinite; will-change: transform; }
+.petal svg { width: 100%; height: 100%; display: block; animation: petal-flutter calc(var(--dur, 14s) / 4) ease-in-out infinite alternate; }
+.petal:nth-child(1)  { --x: 6%;  --size: 16px; --dur: 15s; --delay: -2s;  --drift: 60px; }
+.petal:nth-child(2)  { --x: 18%; --size: 12px; --dur: 18s; --delay: -9s;  --drift: -30px; --po: .7; }
+.petal:nth-child(3)  { --x: 29%; --size: 18px; --dur: 13s; --delay: -5s;  --drift: 80px; }
+.petal:nth-child(4)  { --x: 41%; --size: 13px; --dur: 17s; --delay: -12s; --drift: 40px; --po: .75; }
+.petal:nth-child(5)  { --x: 52%; --size: 15px; --dur: 14s; --delay: -1s;  --drift: -50px; }
+.petal:nth-child(6)  { --x: 63%; --size: 11px; --dur: 19s; --delay: -7s;  --drift: 30px; --po: .65; }
+.petal:nth-child(7)  { --x: 72%; --size: 17px; --dur: 15s; --delay: -11s; --drift: -70px; }
+.petal:nth-child(8)  { --x: 81%; --size: 12px; --dur: 16s; --delay: -4s;  --drift: 50px; --po: .7; }
+.petal:nth-child(9)  { --x: 90%; --size: 15px; --dur: 13s; --delay: -8s;  --drift: -40px; }
+.petal:nth-child(10) { --x: 12%; --size: 10px; --dur: 20s; --delay: -14s; --drift: 90px; --po: .6; }
+.petal:nth-child(11) { --x: 47%; --size: 14px; --dur: 16s; --delay: -15s; --drift: -60px; }
+.petal:nth-child(12) { --x: 95%; --size: 11px; --dur: 18s; --delay: -3s;  --drift: -80px; --po: .65; }
+/* Di layar kecil cukup 8 kelopak agar tetap ringan */
+@media (max-width: 640px) { .petal:nth-child(n + 9) { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  .js .reveal { opacity: 1; transform: none; }
+  .js .corner { opacity: var(--co); }
+  .petals { display: none !important; }
+}
+
+/* Sampul dapat digulir: bunga sudut jangan menjorok keluar agar tidak muncul scrollbar palsu */
+.cover .corner--tl, .cover .corner--tr { top: 0; }
+.cover .corner--bl, .cover .corner--br { bottom: 0; }
+.cover .corner--tl, .cover .corner--bl { left: 0; }
+.cover .corner--tr, .cover .corner--br { right: 0; }
+/* Bunga sampul tidak boleh menutupi tombol pada layar pendek */
+.cover .corner { --cs: min(46vw, 270px, 30vh); }
+.cover .corner--sm { --cs: min(32vw, 180px, 22vh); }
